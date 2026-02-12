@@ -265,6 +265,43 @@ const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 `;
 
 // ============================================================================
+// Bash Tool
+// ============================================================================
+
+export const BASH_TOOL_DESCRIPTION = `# Bash
+
+Execute bash commands in a sandboxed environment with a virtual filesystem.
+
+## When to Use
+- File creation, manipulation, and inspection (echo, cat, grep, sed, awk, etc.)
+- Directory operations (mkdir, ls, find, tree, etc.)
+- Text processing and data transformation pipelines
+- Running scripts and command sequences
+
+## Environment
+- Sandboxed in-browser bash with 90+ POSIX commands
+- Virtual filesystem rooted at / with working directory /home/user
+- Filesystem persists across tool calls within the session
+- No network access, no system-level operations
+
+## Available Commands
+Core: echo, printf, cat, head, tail, tee, wc, sort, uniq, tr, cut, paste, rev, fold, expand, unexpand
+Search: grep, find, xargs
+Editors: sed, awk
+Files: ls, cp, mv, rm, mkdir, rmdir, touch, chmod, ln, stat, file, du, df, realpath, basename, dirname
+Text: diff, comm, join, column
+Archive: tar
+Other: date, env, export, set, unset, alias, test, expr, seq, yes, true, false, sleep, read, mapfile
+
+## Important Notes
+- No network commands (curl, wget, etc.)
+- No package managers or installers
+- Environment variables do NOT persist across calls, but files DO persist
+- Use \`echo "content" > file.txt\` to create files
+- Use \`cat file.txt\` to read files
+`;
+
+// ============================================================================
 // Extract Document Tool
 // ============================================================================
 

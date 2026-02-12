@@ -66,6 +66,7 @@ export {
 	ARTIFACTS_RUNTIME_PROVIDER_DESCRIPTION_RO,
 	ARTIFACTS_RUNTIME_PROVIDER_DESCRIPTION_RW,
 	ATTACHMENTS_RUNTIME_DESCRIPTION,
+	BASH_TOOL_DESCRIPTION,
 } from "./prompts/prompts.js";
 // Storage
 export { AppStorage, getAppStorage, setAppStorage } from "./storage/app-storage.js";
@@ -99,6 +100,7 @@ export { ImageArtifact } from "./tools/artifacts/ImageArtifact.js";
 export { MarkdownArtifact } from "./tools/artifacts/MarkdownArtifact.js";
 export { SvgArtifact } from "./tools/artifacts/SvgArtifact.js";
 export { TextArtifact } from "./tools/artifacts/TextArtifact.js";
+export { createBashTool } from "./tools/bash.js";
 export { createExtractDocumentTool, extractDocumentTool } from "./tools/extract-document.js";
 // Tools
 export { getToolRenderer, registerToolRenderer, renderTool, setShowJsonMode } from "./tools/index.js";

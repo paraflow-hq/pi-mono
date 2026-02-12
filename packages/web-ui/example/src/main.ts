@@ -7,6 +7,7 @@ import {
 	AppStorage,
 	ChatPanel,
 	CustomProvidersStore,
+	createBashTool,
 	createJavaScriptReplTool,
 	IndexedDBStorageBackend,
 	// PersistentStorageDialog, // TODO: Fix - currently broken
@@ -167,6 +168,7 @@ const createAgent = async (initialState?: Partial<AgentState>) => {
 Available tools:
 - JavaScript REPL: Execute JavaScript code in a sandboxed browser environment (can do calculations, get time, process data, create visualizations, etc.)
 - Artifacts: Create interactive HTML, SVG, Markdown, and text artifacts
+- Bash: Execute bash commands in a sandboxed virtual filesystem (file operations, text processing, scripting, etc.)
 
 Feel free to use these tools when needed to provide accurate and helpful responses.`,
 			model: getModel("anthropic", "claude-sonnet-4-5-20250929"),
@@ -210,7 +212,9 @@ Feel free to use these tools when needed to provide accurate and helpful respons
 			// Create javascript_repl tool with access to attachments + artifacts
 			const replTool = createJavaScriptReplTool();
 			replTool.runtimeProvidersFactory = runtimeProvidersFactory;
-			return [replTool];
+			// Create bash tool with sandboxed virtual filesystem
+			const bashTool = createBashTool();
+			return [replTool, bashTool];
 		},
 	});
 };
