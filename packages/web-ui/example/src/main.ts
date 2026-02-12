@@ -29,11 +29,12 @@ import { Button } from "@mariozechner/mini-lit/dist/Button.js";
 import { Input } from "@mariozechner/mini-lit/dist/Input.js";
 import { createSystemNotification, customConvertToLlm, registerCustomMessageRenderers } from "./custom-messages.js";
 
-// Register only the Anthropic provider
+// Register Anthropic provider with custom base URL
+const baseUrl = "https://litellm-proxy-test.onrender.com";
 registerApiProvider({
 	api: "anthropic-messages",
-	stream: streamAnthropic,
-	streamSimple: streamSimpleAnthropic,
+	stream: (model, context, options) => streamAnthropic({ ...model, baseUrl }, context, options),
+	streamSimple: (model, context, options) => streamSimpleAnthropic({ ...model, baseUrl }, context, options),
 });
 
 // Register custom message renderers
