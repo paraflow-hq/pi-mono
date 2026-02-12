@@ -65,7 +65,7 @@ export class ChatPanel extends LitElement {
 				agentInterface: AgentInterface,
 				artifactsPanel: ArtifactsPanel,
 				runtimeProvidersFactory: () => SandboxRuntimeProvider[],
-			) => AgentTool<any>[];
+			) => AgentTool<any>[] | Promise<AgentTool<any>[]>;
 		},
 	) {
 		this.agent = agent;
@@ -137,7 +137,7 @@ export class ChatPanel extends LitElement {
 		// Set tools on the agent
 		// Pass runtimeProvidersFactory so consumers can configure their own REPL tools
 		const additionalTools =
-			config?.toolsFactory?.(agent, this.agentInterface, this.artifactsPanel, runtimeProvidersFactory) || [];
+			(await config?.toolsFactory?.(agent, this.agentInterface, this.artifactsPanel, runtimeProvidersFactory)) || [];
 		const tools = [this.artifactsPanel.tool, ...additionalTools];
 		this.agent.setTools(tools);
 

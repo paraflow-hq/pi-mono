@@ -4,6 +4,7 @@ import { Button } from "@mariozechner/mini-lit/dist/Button.js";
 import type { Agent, AgentMessage, AgentTool } from "@mariozechner/pi-agent-core";
 import { StringEnum, type ToolCall } from "@mariozechner/pi-ai";
 import { type Static, Type } from "@sinclair/typebox";
+import type { IFileSystem } from "just-bash/browser";
 import { html, LitElement, type TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { createRef, type Ref, ref } from "lit/directives/ref.js";
@@ -58,6 +59,12 @@ export class ArtifactsPanel extends LitElement {
 	// Programmatically managed artifact elements
 	private artifactElements = new Map<string, ArtifactElement>();
 	private contentRef: Ref<HTMLDivElement> = createRef();
+
+	// Shared filesystem (optional, for bash integration)
+	@property({ attribute: false }) fs?: IFileSystem;
+	private fsPath(filename: string): string {
+		return "/home/user/" + filename;
+	}
 
 	// Agent reference (needed to get attachments for HTML artifacts)
 	@property({ attribute: false }) agent?: Agent;
@@ -424,9 +431,9 @@ export class ArtifactsPanel extends LitElement {
 			case "rewrite":
 				return await this.rewriteArtifact(params, options);
 			case "get":
-				return this.getArtifact(params);
+				return await this.getArtifact(params);
 			case "delete":
-				return this.deleteArtifact(params);
+				return await this.deleteArtifact(params);
 			case "logs":
 				return this.getLogs(params);
 			default:
@@ -484,6 +491,13 @@ export class ArtifactsPanel extends LitElement {
 		this._artifacts.set(params.filename, artifact);
 		this._artifacts = new Map(this._artifacts);
 
+		// Sync to shared filesystem
+		if (this.fs) {
+			try {
+				await this.fs.writeFile(this.fsPath(params.filename), params.content);
+			} catch {}
+		}
+
 		// Create or update element
 		this.getOrCreateArtifactElement(params.filename, params.content);
 		if (!options.silent) {
@@ -518,13 +532,30 @@ export class ArtifactsPanel extends LitElement {
 		if (!params.old_str || params.new_str === undefined) {
 			return "Error: update command requires old_str and new_str";
 		}
-		if (!artifact.content.includes(params.old_str)) {
-			return `Error: String not found in file. Here is the full content:\n\n${artifact.content}`;
+
+		// Read latest content from fs (bash may have modified it)
+		let currentContent = artifact.content;
+		if (this.fs) {
+			try {
+				currentContent = await this.fs.readFile(this.fsPath(params.filename));
+			} catch {}
 		}
 
-		artifact.content = artifact.content.replace(params.old_str, params.new_str);
+		if (!currentContent.includes(params.old_str)) {
+			return `Error: String not found in file. Here is the full content:\n\n${currentContent}`;
+		}
+
+		const newContent = currentContent.replace(params.old_str, params.new_str);
+		artifact.content = newContent;
 		artifact.updatedAt = new Date();
 		this._artifacts.set(params.filename, artifact);
+
+		// Sync back to shared filesystem
+		if (this.fs) {
+			try {
+				await this.fs.writeFile(this.fsPath(params.filename), newContent);
+			} catch {}
+		}
 
 		// Update element
 		this.getOrCreateArtifactElement(params.filename, artifact.content);
@@ -567,6 +598,13 @@ export class ArtifactsPanel extends LitElement {
 		artifact.updatedAt = new Date();
 		this._artifacts.set(params.filename, artifact);
 
+		// Sync to shared filesystem
+		if (this.fs) {
+			try {
+				await this.fs.writeFile(this.fsPath(params.filename), params.content);
+			} catch {}
+		}
+
 		// Update element
 		this.getOrCreateArtifactElement(params.filename, artifact.content);
 		if (!options.silent) {
@@ -589,7 +627,13 @@ export class ArtifactsPanel extends LitElement {
 		return result;
 	}
 
-	private getArtifact(params: ArtifactsParams): string {
+	private async getArtifact(params: ArtifactsParams): Promise<string> {
+		// Try reading from shared filesystem first (can see bash-created files)
+		if (this.fs) {
+			try {
+				return await this.fs.readFile(this.fsPath(params.filename));
+			} catch {}
+		}
 		const artifact = this._artifacts.get(params.filename);
 		if (!artifact) {
 			const files = Array.from(this._artifacts.keys());
@@ -599,7 +643,7 @@ export class ArtifactsPanel extends LitElement {
 		return artifact.content;
 	}
 
-	private deleteArtifact(params: ArtifactsParams): string {
+	private async deleteArtifact(params: ArtifactsParams): Promise<string> {
 		const artifact = this._artifacts.get(params.filename);
 		if (!artifact) {
 			const files = Array.from(this._artifacts.keys());
@@ -609,6 +653,13 @@ export class ArtifactsPanel extends LitElement {
 
 		this._artifacts.delete(params.filename);
 		this._artifacts = new Map(this._artifacts);
+
+		// Sync deletion to shared filesystem
+		if (this.fs) {
+			try {
+				await this.fs.rm(this.fsPath(params.filename));
+			} catch {}
+		}
 
 		// Remove element
 		const element = this.artifactElements.get(params.filename);

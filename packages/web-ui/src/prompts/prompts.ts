@@ -106,6 +106,12 @@ Depends on action:
 ✅ Text-based files you author: .md, .txt, .html, .js, .css, .json, .csv, .svg
 ❌ Binary files requiring libraries (use repl): .pdf, .docx
 
+## Shared Filesystem with Bash
+- Artifacts and Bash share the same virtual filesystem at /home/user/
+- Files created here are directly accessible via bash commands: \`cat report.html\`, \`wc -l notes.md\`
+- Files created by bash (\`echo "data" > file.txt\`) are readable via artifacts \`get\` command
+- No need to manually copy or sync files between them
+
 ## Critical - Prefer Update Over Rewrite
 ❌ NEVER: get entire file + rewrite to change small sections
 ✅ ALWAYS: update for targeted edits (token efficient)
@@ -292,6 +298,12 @@ Files: ls, cp, mv, rm, mkdir, rmdir, touch, chmod, ln, stat, file, du, df, realp
 Text: diff, comm, join, column
 Archive: tar
 Other: date, env, export, set, unset, alias, test, expr, seq, yes, true, false, sleep, read, mapfile
+
+## Shared Filesystem with Artifacts
+- Bash and Artifacts share the same virtual filesystem at /home/user/
+- Files created by the artifacts tool are directly accessible: \`cat report.html\`, \`wc -l report.html\`
+- Files created by bash are readable via artifacts \`get\` command
+- No need to manually copy or sync files between them
 
 ## Important Notes
 - No network commands (curl, wget, etc.)

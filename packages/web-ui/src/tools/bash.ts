@@ -1,5 +1,7 @@
 import type { AgentTool } from "@mariozechner/pi-agent-core";
 import { type Static, Type } from "@sinclair/typebox";
+import type * as JustBash from "just-bash/browser";
+import type { IFileSystem } from "just-bash/browser";
 import { BASH_TOOL_DESCRIPTION } from "../prompts/prompts.js";
 
 const bashSchema = Type.Object({
@@ -28,7 +30,7 @@ function ensureProcessShim() {
 }
 
 // Cache the dynamic import so it's only loaded once
-let justBashModule: typeof import("just-bash/browser") | null = null;
+let justBashModule: typeof JustBash | null = null;
 
 async function loadJustBash() {
 	if (!justBashModule) {
@@ -38,7 +40,12 @@ async function loadJustBash() {
 	return justBashModule;
 }
 
-export function createBashTool(): AgentTool<typeof bashSchema> & {
+export async function createSharedFs(): Promise<IFileSystem> {
+	const { InMemoryFs } = await loadJustBash();
+	return new InMemoryFs();
+}
+
+export function createBashTool(options?: { fs?: IFileSystem }): AgentTool<typeof bashSchema> & {
 	bash: any | null;
 	reset: () => void;
 } {
@@ -60,7 +67,7 @@ export function createBashTool(): AgentTool<typeof bashSchema> & {
 
 			if (!bashInstance) {
 				const { Bash, InMemoryFs } = await loadJustBash();
-				bashInstance = new Bash({ fs: new InMemoryFs(), cwd: "/home/user" });
+				bashInstance = new Bash({ fs: options?.fs ?? new InMemoryFs(), cwd: "/home/user" });
 			}
 
 			const result = await bashInstance.exec(args.command);

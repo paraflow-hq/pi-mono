@@ -9,6 +9,7 @@ import {
 	CustomProvidersStore,
 	createBashTool,
 	createJavaScriptReplTool,
+	createSharedFs,
 	IndexedDBStorageBackend,
 	// PersistentStorageDialog, // TODO: Fix - currently broken
 	ProviderKeysStore,
@@ -208,12 +209,15 @@ Feel free to use these tools when needed to provide accurate and helpful respons
 		onApiKeyRequired: async (provider: string) => {
 			return await ApiKeyPromptDialog.prompt(provider);
 		},
-		toolsFactory: (_agent, _agentInterface, _artifactsPanel, runtimeProvidersFactory) => {
+		toolsFactory: async (_agent, _agentInterface, artifactsPanel, runtimeProvidersFactory) => {
 			// Create javascript_repl tool with access to attachments + artifacts
 			const replTool = createJavaScriptReplTool();
 			replTool.runtimeProvidersFactory = runtimeProvidersFactory;
-			// Create bash tool with sandboxed virtual filesystem
-			const bashTool = createBashTool();
+			// Create shared filesystem so bash and artifacts share the same storage
+			const sharedFs = await createSharedFs();
+			artifactsPanel.fs = sharedFs;
+			// Create bash tool with shared virtual filesystem
+			const bashTool = createBashTool({ fs: sharedFs });
 			return [replTool, bashTool];
 		},
 	});

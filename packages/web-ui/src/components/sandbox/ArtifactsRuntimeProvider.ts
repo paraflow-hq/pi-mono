@@ -151,6 +151,16 @@ export class ArtifactsRuntimeProvider implements SandboxRuntimeProvider {
 				}
 
 				case "get": {
+					// Try reading from shared filesystem first (can see bash-created files)
+					const panel = this.artifactsPanel as any;
+					if (panel.fs) {
+						try {
+							const fsContent = await panel.fs.readFile("/home/user/" + filename);
+							respond({ success: true, result: fsContent });
+							break;
+						} catch {}
+					}
+					// Fall back to artifacts Map
 					const artifact = this.artifactsPanel.artifacts.get(filename);
 					if (!artifact) {
 						respond({ success: false, error: `Artifact not found: ${filename}` });
