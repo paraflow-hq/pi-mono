@@ -19,7 +19,6 @@ import {
 	type OAuthLoginCallbacks,
 	type SimpleStreamOptions,
 	streamSimpleAnthropic,
-	streamSimpleOpenAIResponses,
 } from "@mariozechner/pi-ai";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
@@ -30,7 +29,6 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 const GITLAB_COM_URL = "https://gitlab.com";
 const AI_GATEWAY_URL = "https://cloud.gitlab.com";
 const ANTHROPIC_PROXY_URL = `${AI_GATEWAY_URL}/ai/v1/proxy/anthropic/`;
-const OPENAI_PROXY_URL = `${AI_GATEWAY_URL}/ai/v1/proxy/openai/v1`;
 
 const BUNDLED_CLIENT_ID = "da4edff2e6ebd2bc3208611e2768bc1c1dd7be791dc5ff26ca34ca9ee44f7d4b";
 const OAUTH_SCOPES = ["api"];
@@ -41,12 +39,9 @@ const DIRECT_ACCESS_TTL = 25 * 60 * 1000;
 // Models - exported for use by tests
 // =============================================================================
 
-type Backend = "anthropic" | "openai";
-
 interface GitLabModel {
 	id: string;
 	name: string;
-	backend: Backend;
 	baseUrl: string;
 	reasoning: boolean;
 	input: ("text" | "image")[];
@@ -56,11 +51,9 @@ interface GitLabModel {
 }
 
 export const MODELS: GitLabModel[] = [
-	// Anthropic
 	{
 		id: "claude-opus-4-5-20251101",
 		name: "Claude Opus 4.5",
-		backend: "anthropic",
 		baseUrl: ANTHROPIC_PROXY_URL,
 		reasoning: true,
 		input: ["text", "image"],
@@ -71,7 +64,6 @@ export const MODELS: GitLabModel[] = [
 	{
 		id: "claude-sonnet-4-5-20250929",
 		name: "Claude Sonnet 4.5",
-		backend: "anthropic",
 		baseUrl: ANTHROPIC_PROXY_URL,
 		reasoning: true,
 		input: ["text", "image"],
@@ -82,47 +74,12 @@ export const MODELS: GitLabModel[] = [
 	{
 		id: "claude-haiku-4-5-20251001",
 		name: "Claude Haiku 4.5",
-		backend: "anthropic",
 		baseUrl: ANTHROPIC_PROXY_URL,
 		reasoning: true,
 		input: ["text", "image"],
 		cost: { input: 1, output: 5, cacheRead: 0.1, cacheWrite: 1.25 },
 		contextWindow: 200000,
 		maxTokens: 8192,
-	},
-	// OpenAI (all use Responses API)
-	{
-		id: "gpt-5.1-2025-11-13",
-		name: "GPT-5.1",
-		backend: "openai",
-		baseUrl: OPENAI_PROXY_URL,
-		reasoning: true,
-		input: ["text", "image"],
-		cost: { input: 2.5, output: 10, cacheRead: 0, cacheWrite: 0 },
-		contextWindow: 128000,
-		maxTokens: 16384,
-	},
-	{
-		id: "gpt-5-mini-2025-08-07",
-		name: "GPT-5 Mini",
-		backend: "openai",
-		baseUrl: OPENAI_PROXY_URL,
-		reasoning: true,
-		input: ["text", "image"],
-		cost: { input: 0.15, output: 0.6, cacheRead: 0, cacheWrite: 0 },
-		contextWindow: 128000,
-		maxTokens: 16384,
-	},
-	{
-		id: "gpt-5-codex",
-		name: "GPT-5 Codex",
-		backend: "openai",
-		baseUrl: OPENAI_PROXY_URL,
-		reasoning: true,
-		input: ["text", "image"],
-		cost: { input: 2.5, output: 10, cacheRead: 0, cacheWrite: 0 },
-		contextWindow: 128000,
-		maxTokens: 16384,
 	},
 ];
 
@@ -283,10 +240,11 @@ export function streamGitLabDuo(
 			const headers = { ...directAccess.headers, Authorization: `Bearer ${directAccess.token}` };
 			const streamOptions = { ...options, apiKey: "gitlab-duo", headers };
 
-			const innerStream =
-				cfg.backend === "anthropic"
-					? streamSimpleAnthropic(modelWithBaseUrl as Model<"anthropic-messages">, context, streamOptions)
-					: streamSimpleOpenAIResponses(modelWithBaseUrl as Model<"openai-responses">, context, streamOptions);
+			const innerStream = streamSimpleAnthropic(
+				modelWithBaseUrl as Model<"anthropic-messages">,
+				context,
+				streamOptions,
+			);
 
 			for await (const event of innerStream) stream.push(event);
 			stream.end();

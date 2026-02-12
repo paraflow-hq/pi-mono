@@ -61,7 +61,7 @@ async function main() {
 		messages: [{ role: "user", content: "Say hello in exactly 3 words.", timestamp: Date.now() }],
 	};
 
-	console.log(`Model: ${model.id}, Backend: ${cfg.backend}, Thinking: ${useThinking}`);
+	console.log(`Model: ${model.id}, Thinking: ${useThinking}`);
 
 	const stream = streamSimple(model, context, {
 		apiKey: gitlabCred.access,
