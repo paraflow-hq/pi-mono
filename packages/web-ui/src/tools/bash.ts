@@ -41,8 +41,13 @@ async function loadJustBash() {
 }
 
 export async function createSharedFs(): Promise<IFileSystem> {
-	const { InMemoryFs } = await loadJustBash();
-	return new InMemoryFs();
+	try {
+		const { OpfsBackedFs } = await import("./opfs-fs.js");
+		return await OpfsBackedFs.create();
+	} catch {
+		const { InMemoryFs } = await loadJustBash();
+		return new InMemoryFs();
+	}
 }
 
 export function createBashTool(options?: { fs?: IFileSystem }): AgentTool<typeof bashSchema> & {

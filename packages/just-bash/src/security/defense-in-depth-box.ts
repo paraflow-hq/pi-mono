@@ -71,26 +71,6 @@ type AsyncLocalStorageType<T> = {
 	getStore(): T | undefined;
 };
 
-let AsyncLocalStorageClass: (new <T>() => AsyncLocalStorageType<T>) | null = null;
-
-// Only load AsyncLocalStorage in Node.js (not in browser builds)
-if (!IS_BROWSER) {
-	try {
-		// Use createRequire for ESM compatibility (require is not defined in ESM)
-		// This approach works in both CJS and ESM Node.js environments
-		const { createRequire } = await import("node:module");
-		const require = createRequire(import.meta.url);
-		const asyncHooks = require("node:async_hooks");
-		AsyncLocalStorageClass = asyncHooks.AsyncLocalStorage;
-	} catch (e) {
-		// AsyncLocalStorage not available (e.g., in some edge runtimes)
-		console.debug(
-			"[DefenseInDepthBox] AsyncLocalStorage not available, defense-in-depth disabled:",
-			e instanceof Error ? e.message : e,
-		);
-	}
-}
-
 /**
  * Suffix added to all security violation messages.
  */
@@ -122,9 +102,8 @@ interface DefenseContext {
 }
 
 // AsyncLocalStorage instance to track whether current async context is within bash.exec()
-// Only created in Node.js environments (not in browser builds)
-const executionContext: AsyncLocalStorageType<DefenseContext> | null =
-	!IS_BROWSER && AsyncLocalStorageClass ? new AsyncLocalStorageClass<DefenseContext>() : null;
+// Always null in browser builds (AsyncLocalStorage is Node.js-only).
+const executionContext: AsyncLocalStorageType<DefenseContext> | null = null;
 
 // Maximum number of violations to store (prevent memory issues)
 const MAX_STORED_VIOLATIONS = 1000;
