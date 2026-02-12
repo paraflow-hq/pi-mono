@@ -1,0 +1,25 @@
+{
+	"name": "@mariozechner/pi-cf-worker",
+	"version": "0.52.9",
+	"description": "Agent tools for Cloudflare Workers with virtual filesystem and bash",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": ["dist", "README.md"],
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "tsgo -p tsconfig.build.json",
+		"dev": "tsgo -p tsconfig.build.json --watch --preserveWatchOutput"
+	},
+	"dependencies": {
+		"@mariozechner/pi-agent-core": "^0.52.9",
+		"@mariozechner/pi-ai": "^0.52.9",
+		"just-bash": "^2.9.8"
+	},
+	"keywords": ["cloudflare-workers", "ai", "agent", "bash", "virtual-filesystem"],
+	"author": "Mario Zechner",
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "^5.7.3"
+	}
+}
