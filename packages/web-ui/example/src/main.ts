@@ -1,6 +1,6 @@
 import "@mariozechner/mini-lit/dist/ThemeToggle.js";
 import { Agent, type AgentMessage } from "@mariozechner/pi-agent-core";
-import { getModel } from "@mariozechner/pi-ai";
+import { getModel, registerApiProvider, streamAnthropic, streamSimpleAnthropic } from "@mariozechner/pi-ai";
 import {
 	type AgentState,
 	ApiKeyPromptDialog,
@@ -28,6 +28,13 @@ import { icon } from "@mariozechner/mini-lit";
 import { Button } from "@mariozechner/mini-lit/dist/Button.js";
 import { Input } from "@mariozechner/mini-lit/dist/Input.js";
 import { createSystemNotification, customConvertToLlm, registerCustomMessageRenderers } from "./custom-messages.js";
+
+// Register only the Anthropic provider
+registerApiProvider({
+	api: "anthropic-messages",
+	stream: streamAnthropic,
+	streamSimple: streamSimpleAnthropic,
+});
 
 // Register custom message renderers
 registerCustomMessageRenderers();

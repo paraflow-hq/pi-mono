@@ -22,8 +22,11 @@
  */
 
 import type { AssistantMessage } from "@mariozechner/pi-ai";
-import { getModels } from "@mariozechner/pi-ai";
+import { getModels, registerBuiltInApiProviders } from "@mariozechner/pi-ai";
 import { describe, expect, it } from "vitest";
+
+registerBuiltInApiProviders();
+
 import { Agent } from "../src/index.js";
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 

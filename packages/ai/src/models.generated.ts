@@ -1304,7 +1304,7 @@ export const MODELS = {
 			name: "Claude Haiku 3.5",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1321,7 +1321,7 @@ export const MODELS = {
 			name: "Claude Haiku 3.5 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1338,7 +1338,7 @@ export const MODELS = {
 			name: "Claude Sonnet 3.5",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1355,7 +1355,7 @@ export const MODELS = {
 			name: "Claude Sonnet 3.5 v2",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1372,7 +1372,7 @@ export const MODELS = {
 			name: "Claude Sonnet 3.7",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1389,7 +1389,7 @@ export const MODELS = {
 			name: "Claude Sonnet 3.7 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1406,7 +1406,7 @@ export const MODELS = {
 			name: "Claude Haiku 3",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1423,7 +1423,7 @@ export const MODELS = {
 			name: "Claude Opus 3",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1440,7 +1440,7 @@ export const MODELS = {
 			name: "Claude Sonnet 3",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: false,
 			input: ["text", "image"],
 			cost: {
@@ -1457,7 +1457,7 @@ export const MODELS = {
 			name: "Claude Haiku 4.5 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1474,7 +1474,7 @@ export const MODELS = {
 			name: "Claude Haiku 4.5",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1491,7 +1491,7 @@ export const MODELS = {
 			name: "Claude Opus 4 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1508,7 +1508,7 @@ export const MODELS = {
 			name: "Claude Opus 4.1 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1525,7 +1525,7 @@ export const MODELS = {
 			name: "Claude Opus 4.1",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1542,7 +1542,7 @@ export const MODELS = {
 			name: "Claude Opus 4",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1559,7 +1559,7 @@ export const MODELS = {
 			name: "Claude Opus 4.5 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1576,7 +1576,7 @@ export const MODELS = {
 			name: "Claude Opus 4.5",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1593,7 +1593,7 @@ export const MODELS = {
 			name: "Claude Opus 4.6",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1610,7 +1610,7 @@ export const MODELS = {
 			name: "Claude Sonnet 4 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1627,7 +1627,7 @@ export const MODELS = {
 			name: "Claude Sonnet 4",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1644,7 +1644,7 @@ export const MODELS = {
 			name: "Claude Sonnet 4.5 (latest)",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -1661,7 +1661,7 @@ export const MODELS = {
 			name: "Claude Sonnet 4.5",
 			api: "anthropic-messages",
 			provider: "anthropic",
-			baseUrl: "https://litellm-proxy-test.onrender.com",
+			baseUrl: "https://api.anthropic.com",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
@@ -2288,6 +2288,23 @@ export const MODELS = {
 			},
 			contextWindow: 131072,
 			maxTokens: 32768,
+		} satisfies Model<"openai-completions">,
+		"llama3.1-8b": {
+			id: "llama3.1-8b",
+			name: "Llama 3.1 8B",
+			api: "openai-completions",
+			provider: "cerebras",
+			baseUrl: "https://api.cerebras.ai/v1",
+			reasoning: false,
+			input: ["text"],
+			cost: {
+				input: 0.1,
+				output: 0.1,
+				cacheRead: 0,
+				cacheWrite: 0,
+			},
+			contextWindow: 32000,
+			maxTokens: 8000,
 		} satisfies Model<"openai-completions">,
 		"qwen-3-235b-a22b-instruct-2507": {
 			id: "qwen-3-235b-a22b-instruct-2507",

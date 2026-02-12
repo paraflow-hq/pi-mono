@@ -1,5 +1,5 @@
 import { Agent, type AgentEvent } from "@mariozechner/pi-agent-core";
-import { getModel, type ImageContent } from "@mariozechner/pi-ai";
+import { getModel, type ImageContent, registerBuiltInApiProviders } from "@mariozechner/pi-ai";
 import {
 	AgentSession,
 	AuthStorage,
@@ -22,6 +22,8 @@ import { createExecutor, type SandboxConfig } from "./sandbox.js";
 import type { ChannelInfo, SlackContext, UserInfo } from "./slack.js";
 import type { ChannelStore } from "./store.js";
 import { createMomTools, setUploadFunction } from "./tools/index.js";
+
+registerBuiltInApiProviders();
 
 // Hardcoded model for now - TODO: make configurable (issue #63)
 const model = getModel("anthropic", "claude-sonnet-4-5");

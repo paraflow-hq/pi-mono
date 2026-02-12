@@ -1,6 +1,9 @@
 import type { AssistantMessage, Model, ToolResultMessage, UserMessage } from "@mariozechner/pi-ai";
-import { getModel } from "@mariozechner/pi-ai";
+import { getModel, registerBuiltInApiProviders } from "@mariozechner/pi-ai";
 import { describe, expect, it } from "vitest";
+
+registerBuiltInApiProviders();
+
 import { Agent } from "../src/index.js";
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { calculateTool } from "./utils/calculate.js";
