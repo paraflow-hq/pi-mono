@@ -1,52 +1,21 @@
 import type { AgentTool } from "@mariozechner/pi-agent-core";
 import { type Static, Type } from "@sinclair/typebox";
-import type * as JustBash from "just-bash/browser";
-import type { IFileSystem } from "just-bash/browser";
+import { Bash, type IFileSystem, InMemoryFs } from "just-bash/browser";
 import { BASH_TOOL_DESCRIPTION } from "../prompts/prompts.js";
 
 const bashSchema = Type.Object({
 	command: Type.String({ description: "Bash command to execute" }),
 });
 
-function ensureProcessShim() {
-	if (typeof globalThis.process === "undefined") {
-		(globalThis as any).process = {
-			pid: 1,
-			ppid: 0,
-			getuid: () => 1000,
-			getgid: () => 1000,
-			env: {},
-			cwd: () => "/",
-		};
-	} else {
-		const proc = globalThis.process as any;
-		if (proc.pid === undefined) proc.pid = 1;
-		if (proc.ppid === undefined) proc.ppid = 0;
-		if (!proc.getuid) proc.getuid = () => 1000;
-		if (!proc.getgid) proc.getgid = () => 1000;
-	}
-}
-
-let justBashModule: typeof JustBash | null = null;
-
-async function loadJustBash() {
-	if (!justBashModule) {
-		ensureProcessShim();
-		justBashModule = await import("just-bash/browser");
-	}
-	return justBashModule;
-}
-
-export async function createSharedFs(): Promise<IFileSystem> {
-	const { InMemoryFs } = await loadJustBash();
+export function createSharedFs(): IFileSystem {
 	return new InMemoryFs();
 }
 
 export function createBashTool(options?: { fs?: IFileSystem }): AgentTool<typeof bashSchema> & {
-	bash: any | null;
+	bash: Bash | null;
 	reset: () => void;
 } {
-	let bashInstance: any | null = null;
+	let bashInstance: Bash | null = null;
 
 	return {
 		label: "Bash",
@@ -63,7 +32,6 @@ export function createBashTool(options?: { fs?: IFileSystem }): AgentTool<typeof
 			if (signal?.aborted) throw new Error("Execution aborted");
 
 			if (!bashInstance) {
-				const { Bash, InMemoryFs } = await loadJustBash();
 				bashInstance = new Bash({ fs: options?.fs ?? new InMemoryFs(), cwd: "/home/user" });
 			}
 
