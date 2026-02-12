@@ -393,10 +393,9 @@ describe("Generate E2E Tests", () => {
 		});
 
 		it.skipIf(!isVertexConfigured)("should handle thinking", { retry: 3 }, async () => {
-			const { ThinkingLevel } = await import("@google/genai");
 			await handleThinking(llm, {
 				...vertexOptions,
-				thinking: { enabled: true, budgetTokens: 1024, level: ThinkingLevel.LOW },
+				thinking: { enabled: true, budgetTokens: 1024 },
 			});
 		});
 
@@ -405,10 +404,9 @@ describe("Generate E2E Tests", () => {
 		});
 
 		it.skipIf(!isVertexConfigured)("should handle multi-turn with thinking and tools", { retry: 3 }, async () => {
-			const { ThinkingLevel } = await import("@google/genai");
 			await multiTurn(llm, {
 				...vertexOptions,
-				thinking: { enabled: true, budgetTokens: 1024, level: ThinkingLevel.MEDIUM },
+				thinking: { enabled: true, budgetTokens: 1024 },
 			});
 		});
 

@@ -63,7 +63,7 @@ export class ArtifactsPanel extends LitElement {
 	// Shared filesystem (optional, for bash integration)
 	@property({ attribute: false }) fs?: IFileSystem;
 	private fsPath(filename: string): string {
-		return "/home/user/" + filename;
+		return `/home/user/${filename}`;
 	}
 
 	// Agent reference (needed to get attachments for HTML artifacts)

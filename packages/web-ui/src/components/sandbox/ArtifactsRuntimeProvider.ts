@@ -155,7 +155,7 @@ export class ArtifactsRuntimeProvider implements SandboxRuntimeProvider {
 					const panel = this.artifactsPanel as any;
 					if (panel.fs) {
 						try {
-							const fsContent = await panel.fs.readFile("/home/user/" + filename);
+							const fsContent = await panel.fs.readFile(`/home/user/${filename}`);
 							respond({ success: true, result: fsContent });
 							break;
 						} catch {}

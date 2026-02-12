@@ -14,7 +14,7 @@
 	"dependencies": {
 		"@mariozechner/pi-agent-core": "^0.52.9",
 		"@sinclair/typebox": "^0.34.41",
-		"just-bash": "^2.9.8"
+		"just-bash": "*"
 	},
 	"keywords": ["cloudflare-workers", "ai", "agent", "bash", "virtual-filesystem"],
 	"author": "Mario Zechner",

@@ -21,7 +21,7 @@
 		"@mariozechner/pi-ai": "^0.52.9",
 		"@mariozechner/pi-tui": "^0.52.9",
 		"docx-preview": "^0.3.7",
-		"just-bash": "^2.9.8",
+		"just-bash": "*",
 		"jszip": "^3.10.1",
 		"lucide": "^0.544.0",
 		"ollama": "^0.6.0",
